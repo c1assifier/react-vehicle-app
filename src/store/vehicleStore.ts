@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { fetchVehicles } from '@/services/vehicleApi';
 import type { Vehicle } from '@/types/vehicle';
 
@@ -12,15 +12,33 @@ class VehicleStore {
   }
 
   async loadVehicles() {
-    this.isLoading = true;
+    runInAction(() => {
+      this.isLoading = true;
+      this.error = null;
+    });
+
     try {
       const data = await fetchVehicles();
-      this.vehicles = data;
+      runInAction(() => {
+        this.vehicles = data;
+      });
     } catch (e) {
-      this.error = (e as Error).message;
+      runInAction(() => {
+        this.error = (e as Error).message;
+      });
     } finally {
-      this.isLoading = false;
+      runInAction(() => {
+        this.isLoading = false;
+      });
     }
+  }
+
+  removeVehicle(id: number) {
+    this.vehicles = this.vehicles.filter((v) => v.id !== id);
+  }
+
+  updateVehicle(id: number, data: { name: string; price: number }) {
+    this.vehicles = this.vehicles.map((v) => (v.id === id ? { ...v, ...data } : v));
   }
 }
 
