@@ -1,22 +1,39 @@
 .wrapper {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .button {
-  background: #f3f4f6;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
+  background: var(--bg-block, #282828);
+  border: 1px solid var(--border, #222222);
+  color: var(--text-main, #e4e6eb);
+  font-size: 15px;
+  font-weight: 500;
+  min-width: 165px;
+  text-align: left;
+  padding: 7px 16px 7px 14px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   cursor: pointer;
-  font-weight: 500;
   user-select: none;
+  transition: var(--tr);
+  outline: none;
+}
+
+.button:hover {
+  background: var(--bg-hover, #222222);
+  color: var(--accent-hover, #60a1fa);
+  border-color: var(--accent, #458afc);
 }
 
 .icon {
-  transition: transform 0.2s ease;
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--text-secondary, #bdbdbd);
+  transition: transform 0.2s;
 }
 
 .icon.open {
@@ -25,30 +42,53 @@
 
 .menu {
   position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  top: calc(100% + 6px);
+  left: -10px;
+  background: var(--bg-block, #282828);
+  border: 1px solid var(--border, #222222);
+  border-radius: 9px;
+  box-shadow: var(--shadow, 0 4px 32px #000a);
   list-style: none;
   padding: 4px 0;
-  z-index: 10;
+  z-index: 20;
+  min-width: 165px;
   width: max-content;
-  min-width: 120px;
+  overflow: hidden;
+  margin-top: 0;
 }
 
 .menu li {
-  padding: 8px 12px;
+  padding: 7px 17px 7px 16px;
+  font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
+  color: var(--text-main, #e4e6eb);
+  border-radius: 5px;
+  transition: var(--tr);
+  text-align: left;
 }
 
 .menu li:hover {
-  background: #f0f0f0;
+  background: var(--bg-hover, #222222);
+  color: var(--accent, #458afc);
 }
 
 .active {
   font-weight: 600;
-  background: #e5e7eb;
+  background: rgba(69, 138, 252, 0.08);
+  color: var(--accent, #458afc);
+}
+
+@media (max-width: 600px) {
+  .button {
+    min-width: 120px;
+    font-size: 14px;
+    padding: 7px 11px 7px 9px;
+  }
+  .icon {
+    font-size: 16px;
+  }
+  .menu {
+    min-width: 120px;
+    font-size: 13px;
+  }
 }

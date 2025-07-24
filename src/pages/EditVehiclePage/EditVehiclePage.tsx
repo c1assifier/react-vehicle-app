@@ -4,7 +4,6 @@ import { observer } from 'mobx-react-lite';
 import { vehicleStore } from '@/store/vehicleStore';
 import Container from '@/components/Container/Container';
 import styles from './EditVehiclePage.module.css';
-import { FiHome } from 'react-icons/fi';
 import { vehicleSchema } from '@/validation/vehicleSchema';
 import { ValidationError } from 'yup';
 
@@ -107,7 +106,6 @@ const EditVehiclePage = observer(() => {
         onClick={() => navigate('/')}
         title="На главную"
       >
-        <FiHome style={{ fontSize: 21, marginRight: 6, marginBottom: -3 }} />
         На главную
       </button>
     </Container>

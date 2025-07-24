@@ -4,6 +4,7 @@ import { vehicleStore } from '@/store/vehicleStore';
 import VehicleTable from '@/components/VehicleTable/VehicleTable';
 import Container from '@/components/Container/Container';
 import SortSelect, { type SortOption } from '@/components/SortSelect/SortSelect';
+import { sortVehicles } from '@/utils/sortVehicles';
 import styles from './Home.module.css';
 
 const Home = observer(() => {
@@ -26,13 +27,7 @@ const Home = observer(() => {
     }
   };
 
-  const sortedVehicles =
-    sortOption === 'default'
-      ? vehicleStore.vehicles
-      : [...vehicleStore.vehicles].sort((a, b) => {
-          const [field, order] = sortOption.split('_') as ['year' | 'price', 'asc' | 'desc'];
-          return order === 'asc' ? a[field] - b[field] : b[field] - a[field];
-        });
+  const sortedVehicles = sortVehicles(vehicleStore.vehicles, sortOption);
 
   return (
     <Container>
