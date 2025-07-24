@@ -1,0 +1,38 @@
+:root {
+  --bg-main: #1f1f1f;
+  --bg-header: #181818;
+  --bg-block: #282828;
+  --bg-hover: #222222;
+  --border: #222222;
+  --shadow: 0 4px 32px #000a;
+
+  --text-main: #e4e6eb;
+  --text-secondary: #bdbdbd;
+  --text-muted: #7a7a7a;
+  --text-link: #458afc;
+  --accent: #458afc;
+  --accent-hover: #60a1fa;
+
+  --danger: #d82d27;
+  --danger-bg: #2c1a1b;
+
+  --tr: background 0.16s, border 0.16s, color 0.15s, box-shadow 0.18s;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, Avenir, Arial, sans-serif;
+  line-height: 1.6;
+  background: var(--bg-main);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: var(--tr);
+}
