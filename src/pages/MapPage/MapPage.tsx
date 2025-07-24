@@ -1,11 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { vehicleStore } from '@/store/vehicleStore';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import styles from './MapPage.module.css';
-import { Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
 import { defaultIcon, redIcon } from '@/constants/mapIcons';
 import 'leaflet/dist/leaflet.css';
 
@@ -24,11 +22,8 @@ const MapPage = observer(() => {
   const vehicles = vehicleStore.vehicles;
   const [params] = useSearchParams();
   const [activeId, setActiveId] = useState<string | null>(null);
-
-  // refs для popup
   const markerRefs = useRef<Record<string, L.Marker>>({});
 
-  // 1. Ставим activeId по query-параметру или первой машине
   useEffect(() => {
     if (!vehicles.length) return;
     const idFromParams = params.get('id');
@@ -40,45 +35,38 @@ const MapPage = observer(() => {
     // eslint-disable-next-line
   }, [params, vehicles]);
 
-  // 2. Открываем popup выбранного маркера
   useEffect(() => {
     if (activeId && markerRefs.current[activeId]) {
       markerRefs.current[activeId].openPopup();
     }
   }, [activeId]);
 
-  // 3. Центр карты
   const focusVehicle = activeId ? vehicles.find((v) => String(v.id) === activeId) : vehicles[0];
-
-  const center =
-    focusVehicle && focusVehicle.latitude && focusVehicle.longitude
+  const center: [number, number] =
+    focusVehicle?.latitude && focusVehicle?.longitude
       ? [focusVehicle.latitude, focusVehicle.longitude]
-      : [59.9343, 30.3351]; // СПб по умолчанию
+      : [59.9343, 30.3351];
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <span className={styles.title}>Автомобили на карте</span>
-        <button className={styles.backBtn} onClick={() => navigate(-1)}>
-          <FiArrowLeft style={{ marginRight: 6 }} />
-          Назад
-        </button>
+        <h1 className={styles.title}>Автомобили на карте</h1>
+        <div className={styles.backBtnDesktop}>
+          <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            На главную
+          </button>
+        </div>
       </div>
+
       <div className={styles.mapContainer}>
-        <MapContainer
-          center={center as [number, number]}
-          zoom={13}
-          style={{ width: '100%', height: '100%' }}
-        >
+        <MapContainer center={center} zoom={13} style={{ width: '100%', height: '100%' }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {vehicles.map((v) => (
             <Marker
               key={v.id}
               position={[v.latitude, v.longitude]}
               icon={String(v.id) === activeId ? redIcon : defaultIcon}
-              eventHandlers={{
-                click: () => setActiveId(String(v.id)),
-              }}
+              eventHandlers={{ click: () => setActiveId(String(v.id)) }}
               ref={(ref) => {
                 if (ref) markerRefs.current[String(v.id)] = ref;
               }}
@@ -100,6 +88,12 @@ const MapPage = observer(() => {
           ))}
           {focusVehicle && <FlyTo lat={focusVehicle.latitude} lng={focusVehicle.longitude} />}
         </MapContainer>
+      </div>
+
+      <div className={styles.backBtnMobile}>
+        <button className={styles.backBtn} onClick={() => navigate(-1)}>
+          На главную
+        </button>
       </div>
     </div>
   );
